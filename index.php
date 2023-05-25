@@ -8,7 +8,8 @@
 	<h1>CRUD Klant</h1>
 	<nav>
 		<a href='insert_klant.php'>Toevoegen nieuwe klant</a>
-	</nav>
+	</nav>]
+	<h1>hello</h1>
 
 	<?php
 
