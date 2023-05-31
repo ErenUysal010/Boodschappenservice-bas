@@ -2,7 +2,7 @@
 
 include_once 'classes/database.php';
 
-class Klant extends Database
+class Klanten extends Database
 {
 	public $klantId;
 	public $klantNaam;
@@ -11,7 +11,14 @@ class Klant extends Database
 	public $klantPostcode;
 	public $klantWoonplaats;
 
-	// ...
+	public function BepMaxNr()
+	{
+		// Implementeer de logica om het maximale nummer te bepalen
+		// en retourneer het resultaat
+		// Bijvoorbeeld:
+		// $maxNr = ...;
+		// return $maxNr;
+	}
 
 	public function insertKlant2($naam, $email, $adres, $postcode, $woonplaats)
 	{
@@ -34,10 +41,10 @@ class Klant extends Database
 if (isset($_POST["insert"]) && $_POST["insert"] == "Toevoegen") {
 	include_once 'classes/klant.php';
 
-	$klant = new Klant;
+	$klant = new Klanten;
 	$klant->insertKlant2($_POST['voornaam'], $_POST['achternaam'], $_POST['email'], $_POST['adres'], $_POST['postcode'], $_POST['woonplaats']);
 
-	echo "<script>alert('Klant: $_POST[voornaam] $_POST[achternaam] is toegevoegd')</script>";
+	echo "<script>alert('Klanten: $_POST[voornaam] $_POST[achternaam] is toegevoegd')</script>";
 	echo "<script> location.replace('index.php'); </script>";
 }
 
@@ -46,8 +53,11 @@ if (isset($_POST["insert"]) && $_POST["insert"] == "Toevoegen") {
 <!DOCTYPE html>
 <html>
 
-<body>
+<head>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
 
+<body>
 	<h1>CRUD klant</h1>
 	<h2>Toevoegen</h2>
 	<form method="post">
@@ -65,9 +75,7 @@ if (isset($_POST["insert"]) && $_POST["insert"] == "Toevoegen") {
 		<input type="text" id="wp" name="woonplaats" placeholder="Woonplaats" required /><br><br>
 		<input type='submit' name='insert' value='Toevoegen'>
 	</form><br>
-
 	<a href='index.php'>Terug</a>
-
 </body>
 
 </html>
