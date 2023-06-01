@@ -2,7 +2,7 @@
 
 include_once 'classes/database.php';
 
-class Klanten extends Database
+class Klant extends Database
 {
 	public $klantId;
 	public $klantNaam;
