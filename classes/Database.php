@@ -1,15 +1,27 @@
 <?php
-session_start();
+class Database {
+    private $host = "localhost";
+    private $dbname = "bas_db";
+    private $username = "root";
+    private $password = "";
 
-$host = 'localhost';
-$dbname = 'bas_db';
-$username = 'root';
-$password = '';
+    private $conn;
 
-try {
-    $conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch(PDOException $e) {
-    echo "Connection failed: " . $e->getMessage();
+    public function __construct() {
+        try {
+            $dsn = "mysql:host=$this->host;dbname=$this->dbname";
+            $options = array(
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+            );
+
+            $this->conn = new PDO($dsn, $this->username, $this->password, $options);
+        } catch (PDOException $e) {
+            die("Connectie mislukt: " . $e->getMessage());
+        }
+    }
+
+    public function getConnection() {
+        return $this->conn;
+    }
 }
 ?>

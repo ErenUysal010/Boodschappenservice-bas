@@ -1,81 +1,76 @@
 <?php
+// Inclusief de klantklasse
+require_once 'klant.php';
 
-include_once 'classes/database.php';
+// Verwerk het formulierinzending
+if (isset($_POST['submit'])) {
+	// Ontvang de ingediende gegevens
+	$naam = $_POST['naam'];
+	$email = $_POST['email'];
+	$adres = $_POST['adres'];
+	$postcode = $_POST['postcode'];
+	$woonplaats = $_POST['woonplaats'];
 
-class Klant extends Database
-{
-	public $klantId;
-	public $klantNaam;
-	public $klantEmail;
-	public $klantAdres;
-	public $klantPostcode;
-	public $klantWoonplaats;
-
-	public function BepMaxNr()
-	{
-		// Implementeer de logica om het maximale nummer te bepalen
-		// en retourneer het resultaat
-		// Bijvoorbeeld:
-		// $maxNr = ...;
-		// return $maxNr;
-	}
-
-	public function insertKlant2($naam, $email, $adres, $postcode, $woonplaats)
-	{
-		$klantId = $this->BepMaxNr();
-		$sql = "INSERT INTO klanten (klantId, klantNaam, klantEmail, klantAdres, klantPostcode, klantWoonplaats)
-        VALUES (:klantId, :naam, :email, :adres, :postcode, :woonplaats)";
-
-		$stmt = self::$conn->prepare($sql);
-		$stmt->execute([
-			'klantId' => $klantId,
-			'naam' => $naam,
-			'email' => $email,
-			'adres' => $adres,
-			'postcode' => $postcode,
-			'woonplaats' => $woonplaats
-		]);
+	// Voeg de klant toe aan de database
+	if (Klant::addKlant($naam, $email, $adres, $postcode, $woonplaats)) {
+		echo "Klant succesvol toegevoegd.";
+	} else {
+		echo "Er is een fout opgetreden bij het toevoegen van de klant.";
 	}
 }
 
-if (isset($_POST["insert"]) && $_POST["insert"] == "Toevoegen") {
-	include_once 'classes/klant.php';
-
-	$klant = new Klanten;
-	$klant->insertKlant2($_POST['voornaam'], $_POST['achternaam'], $_POST['email'], $_POST['adres'], $_POST['postcode'], $_POST['woonplaats']);
-
-	echo "<script>alert('Klanten: $_POST[voornaam] $_POST[achternaam] is toegevoegd')</script>";
-	echo "<script> location.replace('index.php'); </script>";
-}
-
+// Haal alle klanten op
+$klanten = Klant::getKlanten();
 ?>
 
+<!-- HTML-formulier om klantgegevens in te voeren -->
 <!DOCTYPE html>
 <html>
 
 <head>
-	<link rel="stylesheet" type="text/css" href="style.css">
+	<link rel="stylesheet" href="styles.css">
+	<title>Klantgegevens</title>
 </head>
 
 <body>
-	<h1>CRUD klant</h1>
-	<h2>Toevoegen</h2>
-	<form method="post">
-		<label for="nv">Voornaam:</label>
-		<input type="text" id="nv" name="voornaam" placeholder="Voornaam" required /><br>
-		<label for="an">Achternaam:</label>
-		<input type="text" id="an" name="achternaam" placeholder="Achternaam" required /><br><br>
-		<label for="em">Email:</label>
-		<input type="text" id="em" name="email" placeholder="Email" required /><br>
-		<label for="ad">Adres:</label>
-		<input type="text" id="ad" name="adres" placeholder="Adres" required /><br>
-		<label for="pc">Postcode:</label>
-		<input type="text" id="pc" name="postcode" placeholder="Postcode" required /><br>
-		<label for="wp">Woonplaats:</label>
-		<input type="text" id="wp" name="woonplaats" placeholder="Woonplaats" required /><br><br>
-		<input type='submit' name='insert' value='Toevoegen'>
-	</form><br>
-	<a href='index.php'>Terug</a>
+	<a href="index.php">Terug naar hoofdpagina</a>
+	<h1>Klantgegevens</h1>
+
+	<!-- Klantformulier -->
+	<h2>Nieuwe klant toevoegen</h2>
+	<form method="post" action="">
+		Naam: <input type="text" name="naam" required><br>
+		Email: <input type="email" name="email" required><br>
+		Adres: <input type="text" name="adres" required><br>
+		Postcode: <input type="text" name="postcode" required><br>
+		Woonplaats: <input type="text" name="woonplaats" required><br>
+		<input type="submit" name="submit" value="Toevoegen">
+	</form>
+
+	<!-- Bestaande klanten -->
+	<h2>Bestaande klanten</h2>
+	<table>
+		<tr>
+			<th>Klant ID</th>
+			<th>Naam</th>
+			<th>Email</th>
+			<th>Adres</th>
+			<th>Postcode</th>
+			<th>Woonplaats</th>
+		</tr>
+		<?php foreach ($klanten as $klant) { ?>
+			<tr>
+				<td><?php echo $klant['klantId']; ?></td>
+				<td><?php echo $klant['klantNaam']; ?></td>
+				<td><?php echo $klant['klantEmail']; ?></td>
+				<td><?php echo $klant['klantAdres']; ?></td>
+				<td><?php echo $klant['klantPostcode']; ?></td>
+				<td><?php echo $klant['klantWoonplaats']; ?></td>
+				<td><a href="edit_klant.php?id=<?php echo $klant['klantId']; ?>">Bewerken</a></td>
+				<td><a href="delete_klant.php?id=<?php echo $klant['klantId']; ?>">Verwijderen</a></td>
+			</tr>
+		<?php } ?>
+	</table>
 </body>
 
 </html>

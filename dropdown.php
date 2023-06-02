@@ -3,7 +3,7 @@
 <h1>Dropdown Klant</h1>
 
 <?php
-include_once 'classes/klant.php';
+include_once 'klant.php';
 
 // Create a Klant object
 $klant = new Klant();
