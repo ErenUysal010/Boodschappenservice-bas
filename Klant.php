@@ -5,7 +5,8 @@ require_once 'classes/Database.php';
 class Klant {
     // Voeg een nieuwe klant toe aan de database
     public static function addKlant($naam, $email, $adres, $postcode, $woonplaats) {
-        global $conn;
+        $database = new Database();
+        $conn = $database->getConnection();
         
         // Voorbereid SQL-statement
         $stmt = $conn->prepare("INSERT INTO klanten (klantNaam, klantEmail, klantAdres, klantPostcode, klantWoonplaats) VALUES (?, ?, ?, ?, ?)");
@@ -17,7 +18,8 @@ class Klant {
 
     // Haal alle klanten op uit de database
     public static function getKlanten() {
-        global $conn;
+        $database = new Database();
+        $conn = $database->getConnection();
         
         // Voorbereid SQL-statement
         $stmt = $conn->prepare("SELECT * FROM klanten");
@@ -33,7 +35,8 @@ class Klant {
 
     // Haal klant op basis van ID uit de database
     public static function getKlantById($klantId) {
-        global $conn;
+        $database = new Database();
+        $conn = $database->getConnection();
         
         // Voorbereid SQL-statement
         $stmt = $conn->prepare("SELECT * FROM klanten WHERE klantId = ?");
@@ -47,7 +50,8 @@ class Klant {
 
     // Bewerk klantgegevens in de database
     public static function editKlant($klantId, $naam, $email, $adres, $postcode, $woonplaats) {
-        global $conn;
+        $database = new Database();
+        $conn = $database->getConnection();
         
         // Voorbereid SQL-statement
         $stmt = $conn->prepare("UPDATE klanten SET klantNaam = ?, klantEmail = ?, klantAdres = ?, klantPostcode = ?, klantWoonplaats = ? WHERE klantId = ?");
@@ -59,7 +63,8 @@ class Klant {
 
     // Verwijder klant uit de database
     public static function deleteKlant($klantId) {
-        global $conn;
+        $database = new Database();
+        $conn = $database->getConnection();
         
         // Voorbereid SQL-statement
         $stmt = $conn->prepare("DELETE FROM klanten WHERE klantId = ?");
