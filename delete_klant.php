@@ -1,6 +1,6 @@
 <?php
 // Inclusief de klantklasse
-require_once 'klant.php';
+require_once 'classes/Klant.php';
 
 // Controleer of de klant ID aanwezig is in de URL
 if (isset($_GET['id'])) {

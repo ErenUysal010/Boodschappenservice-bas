@@ -1,6 +1,6 @@
 <?php
 // Inclusief de klantklasse
-require_once 'klant.php';
+require_once 'classes/klant.php';
 
 // Verwerk het formulierinzending
 if (isset($_POST['submit'])) {

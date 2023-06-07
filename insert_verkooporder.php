@@ -26,6 +26,8 @@ $artikelen = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $conn = null;
 
 // Form submission handling
+$errors = [];
+
 if (isset($_POST['submit'])) {
     $klantId = $_POST['klantId'];
     $artId = $_POST['artId'];
@@ -33,73 +35,123 @@ if (isset($_POST['submit'])) {
     $verkOrdBestAantal = $_POST['verkOrdBestAantal'];
     $verkOrdStatus = $_POST['verkOrdStatus'];
 
-    // Insert the data into the verkooporder table
-    $database = new Database();
-    $conn = $database->getConnection();
-
-    // Prepare the SQL statement
-    $query = "INSERT INTO verkooporder (klantId, artId, verkOrdDatum, verkOrdBestAantal, verkOrdStatus) VALUES (:klantId, :artId, :verkOrdDatum, :verkOrdBestAantal, :verkOrdStatus)";
-    $stmt = $conn->prepare($query);
-
-    // Bind the parameters
-    $stmt->bindParam(':klantId', $klantId);
-    $stmt->bindParam(':artId', $artId);
-    $stmt->bindParam(':verkOrdDatum', $verkOrdDatum);
-    $stmt->bindParam(':verkOrdBestAantal', $verkOrdBestAantal);
-    $stmt->bindParam(':verkOrdStatus', $verkOrdStatus);
-
-    // Execute the statement
-    if ($stmt->execute()) {
-        // Redirect to success page or display a success message
-        header("Location: verkooporders_inzien.php");
-        exit;
-    } else {
-        // Handle the insert error
-        echo "Failed to insert data.";
+    // Validate form fields
+    if (empty($klantId)) {
+        $errors[] = "Klant is verplicht.";
     }
 
-    // Close the database connection
-    $conn = null;
+    if (empty($artId)) {
+        $errors[] = "Artikel is verplicht.";
+    }
+
+    if (empty($verkOrdDatum)) {
+        $errors[] = "Datum is verplicht.";
+    }
+
+    if (empty($verkOrdBestAantal)) {
+        $errors[] = "Bestelhoeveelheid is verplicht.";
+    }
+
+    if (empty($verkOrdStatus)) {
+        $errors[] = "Status is verplicht.";
+    }
+
+    if (empty($errors)) {
+        // Check if the verkooporder already exists
+        $database = new Database();
+        $conn = $database->getConnection();
+
+        $query = "SELECT COUNT(*) FROM verkooporder WHERE klantId = :klantId AND artId = :artId";
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':klantId', $klantId);
+        $stmt->bindParam(':artId', $artId);
+        $stmt->execute();
+
+        $count = $stmt->fetchColumn();
+
+        if ($count > 0) {
+            $errors[] = "Verkooporder bestaat al.";
+        } else {
+            // Insert the data into the verkooporder table
+            $query = "INSERT INTO verkooporder (klantId, artId, verkOrdDatum, verkOrdBestAantal, verkOrdStatus) VALUES (:klantId, :artId, :verkOrdDatum, :verkOrdBestAantal, :verkOrdStatus)";
+            $stmt = $conn->prepare($query);
+            $stmt->bindParam(':klantId', $klantId);
+            $stmt->bindParam(':artId', $artId);
+            $stmt->bindParam(':verkOrdDatum', $verkOrdDatum);
+            $stmt->bindParam(':verkOrdBestAantal', $verkOrdBestAantal);
+            $stmt->bindParam(':verkOrdStatus', $verkOrdStatus);
+
+            if ($stmt->execute()) {
+                // Redirect to success page or display a success message
+                header("Location: verkooporders_inzien.php");
+                exit();
+            } else {
+                $errors[] = "Er is een fout opgetreden bij het toevoegen van de verkooporder.";
+            }
+        }
+
+        // Close the database connection
+        $conn = null;
+    }
 }
+
 ?>
 
-<!-- HTML Form -->
-<a href="index.php">Terug naar hoofdpagina</a>
+<!DOCTYPE html>
+<html>
 
-<form action="insert_verkooporder.php" method="post">
-    <!-- Dropdown for klantId -->
-    <label for="klantId">Klant:</label>
-    <select name="klantId">
-        <?php
-            foreach ($klanten as $klant) {
-                $selected = ($klant['klantId'] == $klantId) ? 'selected' : '';
-                echo "<option value='{$klant['klantId']}' $selected>{$klant['klantId']} - {$klant['klantNaam']}</option>";
-            }
-        ?>
-    </select><br><br>
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <title>Verkooporder</title>
+</head>
 
-    <!-- Dropdown for artId -->
-    <label for="artId">Artikel:</label>
-    <select name="artId">
-        <?php
-            foreach ($artikelen as $artikel) {
-                $selected = ($artikel['artId'] == $artId) ? 'selected' : '';
-                echo "<option value='{$artikel['artId']}' $selected>{$artikel['artId']} - {$artikel['artOmschrijving']}</option>";
-            }
-        ?>
-    </select><br><br>
+<body>
+    <a href="index.php">Terug naar hoofdpagina</a>
+    <h1>Verkooporder</h1>
 
-    <!-- Rest of the form fields -->
-    <label for="verkOrdDatum">Verkoopdatum:</label>
-    <input type="text" name="verkOrdDatum" value="<?php echo date('Y-m-d'); ?>"><br><br>
+    <h2>Nieuwe verkooporder toevoegen</h2>
 
-    <label for="verkOrdBestAantal">Bestelhoeveelheid:</label>
-    <input type="text" name="verkOrdBestAantal" value=""><br><br>
+    <form method="post" action="insert_verkooporder.php">
+        <label for="klantId">Klant:</label>
+        <select name="klantId" required>
+            <option value="">Kies een klant</option>
+            <?php foreach ($klanten as $klant) { ?>
+                <option value="<?php echo $klant['klantId']; ?>"><?php echo $klant['klantNaam']; ?></option>
+            <?php } ?>
+        </select>
+        <br>
 
-    <label for="verkOrdStatus">Status:</label>
-    <input type="text" name="verkOrdStatus" value=""><br><br>
+        <label for="artId">Artikel:</label>
+        <select name="artId" required>
+            <option value="">Kies een artikel</option>
+            <?php foreach ($artikelen as $artikel) { ?>
+                <option value="<?php echo $artikel['artId']; ?>"><?php echo $artikel['artOmschrijving']; ?></option>
+            <?php } ?>
+        </select>
+        <br>
 
-    <!-- Submit button -->
-    <input type="submit" name="submit" value="Opslaan">
-</form>
-<a href="verkooporders_inzien.php">Verkooporder inzien</a>
+        <label for="verkOrdDatum">Datum:</label>
+        <input type="date" name="verkOrdDatum" value="<?php echo date('Y-m-d'); ?>" required>
+        <br>
+
+        <label for="verkOrdBestAantal">Bestelhoeveelheid:</label>
+        <input type="number" name="verkOrdBestAantal" required>
+        <br>
+
+        <label for="verkOrdStatus">Status:</label>
+        <input type="text" name="verkOrdStatus" required>
+        <br>
+
+        <?php if (!empty($errors)) { ?>
+            <div class="error">
+                <?php foreach ($errors as $error) { ?>
+                    <p><?php echo $error; ?></p>
+                <?php } ?>
+            </div>
+        <?php } ?>
+
+        <input type="submit" name="submit" value="Toevoegen">
+    </form>
+</body>
+
+</html>
