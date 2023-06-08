@@ -1,7 +1,7 @@
 <?php
 // Inclusief de klantklasse
 require_once 'classes/Klant.php';
-
+include 'navbar.php';
 // Verwerk het formulierinzending
 if (isset($_POST['submit'])) {
     // Ontvang de ingediende gegevens
@@ -30,7 +30,6 @@ if (isset($_POST['submit'])) {
 </head>
 
 <body>
-    <a href="index.php">Terug naar hoofdpagina</a>
     <h1>Klantgegevens</h1>
 
     <!-- Klantformulier -->

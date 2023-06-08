@@ -1,6 +1,17 @@
+.logo {
+  display: inline-block;
+  vertical-align: middle; /* Aangepast om het logo verticaal uit te lijnen */
+  width: 300px;
+  height: 100px;
+  margin-right: 20px;
+  margin-top: 0px;
+}
+
 .navbar {
   overflow: hidden;
   background-color: #ff0000;
+  display: flex; /* Toegevoegd om flexbox-indeling te gebruiken */
+  align-items: center; /* Toegevoegd om items verticaal uit te lijnen */
 }
 
 .navbar a {

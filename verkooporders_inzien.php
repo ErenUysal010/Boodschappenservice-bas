@@ -1,7 +1,7 @@
 <?php
 
 require_once 'classes/Database.php';
-
+include 'navbar.php';
 // Maak de verbinding met de database
 $database = new Database();
 $conn = $database->getConnection();
@@ -24,6 +24,9 @@ $conn = null;
 
 // Toon de verkooporders
 if (!empty($verkooporders)) {
+    echo "<h1>Verkoopordergegevens</h1>
+
+    <h2>Bestaande verkooporders</h2>";
     echo "<table>";
     echo "<tr><th>Verkooporder ID</th><th>Klant</th><th>Artikel</th><th>Verkoopdatum</th><th>Bestelhoeveelheid</th><th>Status</th><th>Acties</th><th>Verwijderen</th></tr>";
 

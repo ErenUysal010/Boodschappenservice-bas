@@ -1,7 +1,7 @@
 <?php
 // Inclusief de klantklasse
 require_once 'classes/Klant.php';
-
+include 'navbar.php';
 // Haal alle klanten op
 $klanten = Klant::getKlanten();
 ?>
@@ -16,7 +16,6 @@ $klanten = Klant::getKlanten();
 </head>
 
 <body>
-    <a href="index.php">Terug naar hoofdpagina</a>
     <h1>Klantgegevens</h1>
 
     <!-- Bestaande klanten -->

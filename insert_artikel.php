@@ -1,7 +1,7 @@
 <?php
 // Inclusief de artikelklasse
 require_once 'classes/Artikel.php';
-
+include 'navbar.php';
 // Verwerk het formulierinzending
 if (isset($_POST['submit'])) {
     // Ontvang de ingediende gegevens
@@ -32,7 +32,6 @@ if (isset($_POST['submit'])) {
 </head>
 
 <body>
-    <a href="index.php">Terug naar hoofdpagina</a>
     <h1>Artikelgegevens</h1>
 
     <!-- Artikel formulier -->

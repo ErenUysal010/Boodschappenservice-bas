@@ -1,7 +1,7 @@
 <?php
 // Inclusief de artikelklasse
 require_once 'classes/Artikel.php';
-
+include 'navbar.php';
 // Haal alle artikelen op
 $artikelen = Artikel::getArtikelen();
 ?>
@@ -16,7 +16,6 @@ $artikelen = Artikel::getArtikelen();
 </head>
 
 <body>
-    <a href="index.php">Terug naar hoofdpagina</a>
     <h1>Artikelgegevens</h1>
 
     <!-- Bestaande artikelen -->

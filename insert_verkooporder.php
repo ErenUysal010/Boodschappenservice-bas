@@ -1,7 +1,7 @@
 <?php
 
 require_once 'classes/Database.php';
-
+include 'navbar.php';
 // Create a new instance of the Database class
 $database = new Database();
 $conn = $database->getConnection();
@@ -106,7 +106,6 @@ if (isset($_POST['submit'])) {
 </head>
 
 <body>
-    <a href="index.php">Terug naar hoofdpagina</a>
     <h1>Verkooporder</h1>
 
     <h2>Nieuwe verkooporder toevoegen</h2>
