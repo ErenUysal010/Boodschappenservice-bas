@@ -5,6 +5,7 @@
   height: 100px;
   margin-right: 20px;
   margin-top: 0px;
+  /*mix-blend-mode: color-burn;werkt alleen als je een witte achtergrond hebt*/
 }
 
 .navbar {

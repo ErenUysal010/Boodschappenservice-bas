@@ -7,7 +7,7 @@
     
     <div class="navbar">
         <img class="logo" src="Images/Bas_Logo.png" alt="Bas-logo" >
-		<a class="active" href="index.php">Home</a>
+		<a href="index.php">Home</a>
 		<div class="dropdown">
             <button class="dropbtn">Klanten
                 <i class="fa fa-caret-down"></i>
