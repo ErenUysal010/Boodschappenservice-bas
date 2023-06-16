@@ -1,9 +1,22 @@
 <?php
-// Inclusief de klantklasse
+// Inclusief de Klant-klasse
 require_once 'classes/Klant.php';
 include 'navbar.php';
-// Haal alle klanten op
-$klanten = Klant::getKlanten();
+
+// Verwerk zoekparameters
+$searchTerm = $_GET['search'] ?? '';
+
+// Haal alle klanten op of alleen de gezochte klant(en)
+if (!empty($searchTerm)) {
+    // Controleren of de zoekterm een numerieke waarde is (klant-ID)
+    if (is_numeric($searchTerm)) {
+        $klanten = [Klant::getKlantById($searchTerm)];
+    } else {
+        $klanten = Klant::zoekKlanten($searchTerm);
+    }
+} else {
+    $klanten = Klant::getKlanten();
+}
 ?>
 
 <!-- HTML om bestaande klanten weer te geven -->
@@ -17,6 +30,12 @@ $klanten = Klant::getKlanten();
 
 <body>
     <h1>Klantgegevens</h1>
+
+    <!-- Zoekformulier -->
+    <form method="get" action="klanten_inzien.php">
+        <input type="text" name="search" placeholder="Klant ID of Naam" value="<?php echo $searchTerm; ?>">
+        <button type="submit">Zoeken</button>
+    </form>
 
     <!-- Bestaande klanten -->
     <h2>Bestaande klanten</h2>

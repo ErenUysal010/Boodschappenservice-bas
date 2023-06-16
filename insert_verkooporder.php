@@ -138,7 +138,12 @@ if (isset($_POST['submit'])) {
         <br>
 
         <label for="verkOrdStatus">Status:</label>
-        <input type="text" name="verkOrdStatus" required>
+        <select name="verkOrdStatus" required>
+            <option value="1">1 - Genoteerd in deze tabel</option>
+            <option value="2">2 - Magazijnmedewerker verzamelt het artikel (picking)</option>
+            <option value="3">3 - Tas met artikel is bij de bezorger</option>
+            <option value="4">4 - Tas met artikel is afgeleverd bij de klant</option>
+        </select>
         <br>
 
         <?php if (!empty($errors)) { ?>

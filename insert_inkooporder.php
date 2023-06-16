@@ -115,7 +115,10 @@ if (isset($_POST['submit'])) {
         <br>
 
         <label for="inkOrdStatus">Status:</label>
-        <input type="text" name="inkOrdStatus" required>
+        <select name="inkOrdStatus" required>
+            <option value="1">1 - Het artikel in Niet geleverd</option>
+            <option value="2">2 - Het artikel in Wel geleverd</option>
+        </select>
         <br>
 
         <?php if (!empty($errors)) { ?>

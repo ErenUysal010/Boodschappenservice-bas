@@ -17,7 +17,7 @@ if (isset($_POST['submit'])) {
         echo "Klant succesvol bewerkt.";
 
         // JavaScript redirect naar insert_klant.php
-        echo "<script>window.location.href = 'insert_klant.php';</script>";
+        echo "<script>window.location.href = 'klanten_inzien.php';</script>";
         exit; // Stop verdere verwerking van de pagina
     } else {
         echo "Er is een fout opgetreden bij het bewerken van de klant.";

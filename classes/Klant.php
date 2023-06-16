@@ -1,6 +1,6 @@
 <?php
 // Inclusief de database configuratie
-require_once 'classes/Database.php';
+require_once 'Database.php';
 
 class Klant {
     // Voeg een nieuwe klant toe aan de database
@@ -46,6 +46,22 @@ class Klant {
         $klant = $stmt->fetch(PDO::FETCH_ASSOC);
         
         return $klant;
+    }
+
+    // Zoek klanten op basis van zoekterm (klant-ID of klantnaam)
+    public static function zoekKlanten($searchTerm) {
+        $database = new Database();
+        $conn = $database->getConnection();
+
+        // Voorbereid SQL-statement
+        $stmt = $conn->prepare("SELECT * FROM klanten WHERE klantId = ? OR klantNaam LIKE ?");
+        $searchTerm = "%{$searchTerm}%";
+        $stmt->execute([$searchTerm, $searchTerm]);
+
+        // Haal resultaten op
+        $klanten = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $klanten;
     }
 
     // Bewerk klantgegevens in de database

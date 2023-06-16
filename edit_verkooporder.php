@@ -82,29 +82,38 @@ if (isset($_GET['verkOrdId'])) {
             // Controleer of de verkooporder bestaat
             if ($verkooporder) {
                 // Toon het wijzigingsformulier met de bestaande verkoopordergegevens
-                ?>
+?>
                 <!-- Plaats hier het HTML-formulier om de verkooporder te wijzigen -->
                 <form method="POST" action="">
                     <!-- Invoervelden voor de verkoopordergegevens -->
                     <!-- Zorg ervoor dat de bestaande waarden worden weergegeven in de invoervelden -->
                     <label for="klantId">Klant ID:</label>
                     <input type="text" name="klantId" value="<?php echo $verkooporder['klantId']; ?>">
+                    <br />
 
                     <label for="artId">Artikel ID:</label>
                     <input type="text" name="artId" value="<?php echo $verkooporder['artId']; ?>">
+                    <br />
 
                     <label for="verkOrdDatum">Verkooporder Datum:</label>
                     <input type="text" name="verkOrdDatum" value="<?php echo $verkooporder['verkOrdDatum']; ?>">
+                    <br />
 
                     <label for="verkOrdBestAantal">Bestelhoeveelheid:</label>
                     <input type="text" name="verkOrdBestAantal" value="<?php echo $verkooporder['verkOrdBestAantal']; ?>">
+                    <br />
 
                     <label for="verkOrdStatus">Status:</label>
-                    <input type="text" name="verkOrdStatus" value="<?php echo $verkooporder['verkOrdStatus']; ?>">
-
+                    <select name="verkOrdStatus" required>
+                        <option value="1">1 - Genoteerd in deze tabel</option>
+                        <option value="2">2 - Magazijnmedewerker verzamelt het artikel (picking)</option>
+                        <option value="3">3 - Tas met artikel is bij de bezorger</option>
+                        <option value="4">4 - Tas met artikel is afgeleverd bij de klant</option>
+                    </select>
+                    <br />
                     <input type="submit" name="submit" value="Wijzigen">
                 </form>
-                <?php
+<?php
             } else {
                 echo "Verkooporder niet gevonden.";
             }
