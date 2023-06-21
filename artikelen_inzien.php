@@ -29,7 +29,7 @@ $artikelen = Artikel::getArtikelen();
             <th>Voorraad</th>
             <th>Minimale Voorraad</th>
             <th>Maximale Voorraad</th>
-            <th>Locatie</th>
+            <th>Leverancier</th>
         </tr>
         <?php foreach ($artikelen as $artikel) { ?>
             <tr>
@@ -40,7 +40,7 @@ $artikelen = Artikel::getArtikelen();
                 <td><?php echo $artikel['artVoorraad']; ?></td>
                 <td><?php echo $artikel['artMinVoorraad']; ?></td>
                 <td><?php echo $artikel['artMaxVoorraad']; ?></td>
-                <td><?php echo $artikel['artLocatie']; ?></td>
+                <td><?php echo $artikel['levId']; ?></td>
                 <td><a href="edit_artikel.php?id=<?php echo $artikel['artId']; ?>">Bewerken</a></td>
                 <td><a href="delete_artikel.php?id=<?php echo $artikel['artId']; ?>">Verwijderen</a></td>
             </tr>
